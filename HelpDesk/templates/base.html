@@ -1,0 +1,62 @@
+ {% load static %}
+ {% load active_li_tag %}
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name=viewport content="width=device-width, initial-scale=1">
+    <title>{% block title %} helpdesk App {% endblock %} </title>
+    <link rel="stylesheet" href="{% static 'helpdesk/css/bootstrap.min.css' %}" />
+    <link rel="stylesheet" href="{% static 'helpdesk/css/styles.css' %}" />
+    <link rel="stylesheet" href="{% static 'helpdesk/css/bootstrap-datepicker3.min.css'%}"> 
+</head>
+
+<body>
+    <nav class="navbar navbar-custom navbar-static-top">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="/">helpdesk</a>
+            </div>
+            <div id="navbar" class="navbar-collapse ">
+                {% if not user.is_authenticated %}
+                <ul class="nav navbar-nav navbar-right">
+                    <li ><a href="{% url 'login' %}">Sign in</a></li>
+                </ul>
+                {% endif %} 
+                {% if user.is_authenticated %}
+                <ul class="nav navbar-nav navbar-right">
+                    <li class="{% active 'request' %}"><a href="{% url 'request' %}">Потвержденные</a></li>
+                    {% if user.is_staff %}
+                    <li class="{% active 'temp_requests' %}"><a href="{% url 'temp_requests'%}">Временные</a></li>
+                    {% endif %}
+                    
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">{{user.username}} <span class="caret"></span></a>
+                        <ul class="dropdown-menu">
+                            <li><a href="{% url 'logout' %}">Sign out</a></li>
+                        </ul>
+                    </li>
+                </ul>
+                {% endif %}
+            </div>
+            <!--/.navbar-collapse -->
+        </div>
+        <!--/.container-fluid -->
+    </nav>
+    <div class="container-fluid">
+        {% block content %} {% endblock %}
+    </div>
+    <script src="{% static 'helpdesk/js/jquery.min.js' %}"></script>
+    <script src="{% static 'helpdesk/js/bootstrap.min.js' %}"></script>
+    <script src="{% static 'helpdesk/js/script.js' %}"></script>
+    <script src="{% static 'helpdesk/js/bootstrap-datepicker.min.js' %}"></script>
+    <script src="{% static 'helpdesk/locales/bootstrap-datepicker.ru.min.js' %}"></script>
+</body>
+
+</html>
